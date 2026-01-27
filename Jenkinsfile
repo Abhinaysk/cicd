@@ -13,6 +13,7 @@ pipeline {
                 ])
             }
         }
+    }
 
     stages{
         stage("maven build"){
@@ -41,5 +42,4 @@ pipeline {
             cleanWs()
         }
     }
-}
 }
