@@ -1,19 +1,20 @@
 pipeline {
     agent any
-    satges{
-        stage('checkout'){
-            checkout{
-                 $class: 'GitSCM',
+    stages{
+        stage("CHECKOUT"){
+            steps{
+                checkout([
+                    $class: 'GitSCM',
                     branches: [[name: '*/main']],
                     userRemoteConfigs: [[
-                        url: 'https://github.com/Abhinaysk/jenkins_cicd.git',
-                        credentialsId: 'git_hub'
+                        credentialsId: 'git_hub',
+                        url: 'https://github.com/Abhinaysk/jenkins_cicd.git'
                     ]]
+                ])
             }
         }
-    }
 
-    satges{
+    stages{
         stage("maven build"){
             steps{
                 sh 'mvn clean compile'
