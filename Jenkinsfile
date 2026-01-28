@@ -33,12 +33,12 @@ pipeline {
 
         stage("Maven Build") {
             steps {
-                dir('backend') {
+                
                   sh '''
                     cd maven-project 
                     mvn clean compile
                     '''
-                }
+                
             }
         }
 
