@@ -1,8 +1,14 @@
 pipeline {
     agent any
-    stages{
-        stage("CHECKOUT"){
-            steps{
+
+    tools {
+        maven 'maven'   // Must be configured in Global Tool Configuration
+    }
+
+    stages {
+
+        stage("CHECKOUT") {
+            steps {
                 checkout([
                     $class: 'GitSCM',
                     branches: [[name: '*/main']],
@@ -13,24 +19,23 @@ pipeline {
                 ])
             }
         }
-    }
 
-    stages{
-        stage("maven build"){
-            steps{
+        stage("Maven Build") {
+            steps {
                 sh 'mvn clean compile'
             }
         }
-    }
 
-    stages {
-        stage('sonar_quality') {
+        stage("SonarQube Analysis") {
             steps {
-                withcredentials([string(credentialsId: 'sonar_scanner', variable: 'SONAR_TOKEN')]) {
+                withCredentials([
+                    string(credentialsId: 'sonar_scanner', variable: 'SONAR_TOKEN')
+                ]) {
                     sh """
-                    ls -lrt
-                    pwd
-                    -Dsonar.host.url=http://13.233.179.131:9000 \
+                    mvn sonar:sonar \
+                      -Dsonar.projectKey=jenkins-cicd \
+                      -Dsonar.host.url=http://35.154.94.205:9000/ \
+                      -Dsonar.login=$SONAR_TOKEN
                     """
                 }
             }
