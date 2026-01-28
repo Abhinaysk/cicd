@@ -14,7 +14,7 @@ pipeline {
                     branches: [[name: '*/main']],
                     userRemoteConfigs: [[
                         credentialsId: 'git_hub',
-                        url: 'https://github.com/Abhinaysk/jenkins_cicd/maven.git'
+                        url: 'https://github.com/Abhinaysk/jenkins_cicd/maven-project.git'
                     ]]
                 ])
             }
