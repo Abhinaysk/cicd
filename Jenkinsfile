@@ -14,7 +14,7 @@ pipeline {
                     branches: [[name: '*/main']],
                     userRemoteConfigs: [[
                         credentialsId: 'git_hub',
-                        url: 'https://github.com/Abhinaysk/jenkins_cicd.git'
+                        url: 'https://github.com/Abhinaysk/jenkins_cicd/maven.git'
                     ]]
                 ])
             }
@@ -34,10 +34,7 @@ pipeline {
         stage("Maven Build") {
             steps {
                 
-                  sh '''
-                    cd maven-project 
-                    mvn clean compile
-                    '''
+                  sh 'mvn clean compile'
                 
             }
         }
@@ -66,3 +63,50 @@ pipeline {
         }
     }
 }
+
+
+// pipeline{
+//     agent any
+//     tools {
+//         maven "maven_main"
+//     }
+//     stages{
+//         stage("CHECKOUT"){
+//             steps{
+//                 checkout([
+//                     $class: 'GitSCM',
+//                     branches: [[name: '*/main']],
+//                     userRemoteConfigs: [[
+//                         credentialsId: 'github',
+//                         url: 'https://github.com/Abhinaysk/jenkins_cicd/maven.git'
+//                     ]]
+//                 ])
+//             }
+//         }
+
+//         stage("Maven Build") {
+//             steps {
+//                 sh """
+//                     mvn clean compile
+//                 """
+//             }
+//         }
+
+//         stage("SONAR_SCANNING") {
+//             steps {
+//                 withCredentials([string(credentialsId: 'sonar-server', variable: 'SONAR_TOKEN')]) {
+//                     sh '''
+//                         pwd
+//                         ls -lrt  
+//                         sonar-scanner -Dsonar.host.url=http://35.154.206.235:9000
+//                     '''
+//                 }
+//             }
+//         }
+//     }
+//     post {
+//         always {
+//             cleanWs()
+//         }
+//     }
+// }
