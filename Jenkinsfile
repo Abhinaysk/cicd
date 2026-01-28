@@ -33,28 +33,26 @@ pipeline {
 
         stage("Maven Build") {
             steps {
-                dir('./maven-project'){
-                  sh '''
+                sh '''
                     cd maven-project 
                     mvn clean compile
-                    '''
+                   '''
                 }
-            }
         }
 
         stage("SonarQube Analysis") {
             steps {
-                dir('./maven-project') {
-                    withCredentials([
-                        string(credentialsId: 'sonar-scanner', variable: 'SONAR_TOKEN')
-                    ]) {
-                        sh """
-                        mvn sonar:sonar \
-                        -Dsonar.host.url=http://13.201.32.81:9000 \
-                        -Dsonar.login=$SONAR_TOKEN
-                        """
+               
+                withCredentials([
+                    string(credentialsId: 'sonar-scanner', variable: 'SONAR_TOKEN')
+                ]) {
+                    sh """
+                    mvn sonar:sonar \
+                    -Dsonar.host.url=http://13.201.32.81:9000 \
+                    -Dsonar.login=$SONAR_TOKEN
+                    """
+                
                     
-                    }
                 }
             }
         }
