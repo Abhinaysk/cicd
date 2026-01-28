@@ -24,7 +24,7 @@ pipeline {
        steps {
             sh '''
             pwd
-            ls -la
+            ls -lrt
             find . -name pom.xml
             '''
        }
@@ -32,6 +32,7 @@ pipeline {
 
 
         stage("Maven Build") {
+            
             steps {
                 sh '''
                 cd maven-project 
@@ -42,16 +43,13 @@ pipeline {
 
         stage("SonarQube Analysis") {
             steps {
-                dir 
                 withCredentials([
                     string(credentialsId: 'sonar-scanner', variable: 'SONAR_TOKEN')
                 ]) {
                     sh """
-                    cd maven-project
                     mvn sonar:sonar \
-                      -Dsonar.projectKey=jenkins-cicd \
-                      -Dsonar.host.url=http://13.201.32.81:9000// \
-                      -Dsonar.login=$SONAR_TOKEN
+                      -Dsonar.host.url=http://13.201.32.81:9000/ \
+                    
                     """
                 }
             }
