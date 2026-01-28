@@ -20,6 +20,17 @@ pipeline {
             }
         }
 
+    stage('Debug Workspace') {
+       steps {
+            sh '''
+            pwd
+            ls -la
+            find . -name pom.xml
+            '''
+       }
+    }
+
+
         stage("Maven Build") {
             steps {
                 sh 'mvn clean compile'
