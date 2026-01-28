@@ -33,7 +33,10 @@ pipeline {
 
         stage("Maven Build") {
             steps {
-                sh 'mvn clean compile'
+                sh '''
+                cd maven-project 
+                mvn clean compile
+                '''
             }
         }
 
